@@ -22,12 +22,6 @@ import de.telekom.dogsapp.R;
 
 public class DetailFragment extends Fragment {
 
-    @BindView(R.id.floatingActionButton2)
-    FloatingActionButton fab;
-
-    @BindView(R.id.textView2)
-    TextView tv2;
-
     private int dogUuid;
 
 
@@ -48,16 +42,9 @@ public class DetailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if(getArguments() != null) {
             dogUuid = DetailFragmentArgs.fromBundle(getArguments()).getDogUuid();
-            tv2.setText(String.valueOf(dogUuid));
-
         }
-        fab.setOnClickListener(v -> {onGoToList(); });
     }
 
-    private void onGoToList(){
-        NavDirections action = DetailFragmentDirections.actionList();
-        Navigation.findNavController(fab).navigate(action);
-    }
 
 }
 

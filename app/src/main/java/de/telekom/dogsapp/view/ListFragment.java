@@ -21,9 +21,6 @@ import de.telekom.dogsapp.R;
 
 public class ListFragment extends Fragment {
 
-    @BindView(R.id.floatingActionButton)
-    FloatingActionButton fab;
-
     public ListFragment() {
     }
 
@@ -34,22 +31,6 @@ public class ListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         ButterKnife.bind(this, view);
         return view;
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fab.setOnClickListener(v -> { onGoToDetails();
-        });
-    }
-
-    void onGoToDetails(){
-        //NavDirections action = ListFragmentDirections.actionDetail();
-        ListFragmentDirections.ActionDetail action = ListFragmentDirections.actionDetail();
-        // actionDetail: we have defined it in dogs_navigation: "what to do when clicked...
-        action.setDogUuid(5);
-        Navigation.findNavController(fab).navigate(action);
-
     }
 
 
