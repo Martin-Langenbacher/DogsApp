@@ -67,8 +67,8 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // --> Out because needed only for test purpose! ===========================================>>>
-        ListFragmentDirections.ActionDetail action = ListFragmentDirections.actionDetail();
-        Navigation.findNavController(view).navigate(action);
+        //ListFragmentDirections.ActionDetail action = ListFragmentDirections.actionDetail();
+        //Navigation.findNavController(view).navigate(action);
 
         // instanciate our ViewModel:
         viewModel = ViewModelProviders.of(this).get(ListViewModel.class);
