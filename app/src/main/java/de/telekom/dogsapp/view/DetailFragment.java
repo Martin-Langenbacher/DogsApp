@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +22,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.telekom.dogsapp.R;
 import de.telekom.dogsapp.model.DogBreed;
+import de.telekom.dogsapp.util.Util;
 import de.telekom.dogsapp.viewmodel.DetailViewModel;
 
 
@@ -66,7 +68,7 @@ public class DetailFragment extends Fragment {
         }
 
         viewModel = ViewModelProviders.of(this).get(DetailViewModel.class);
-        viewModel.fetch();
+        viewModel.fetch(dogUuid);
 
         observeViewModel();
 
@@ -74,11 +76,15 @@ public class DetailFragment extends Fragment {
 
     private void observeViewModel () {
         viewModel.dogLiveData.observe(this, dogBreed -> {
-            if(dogBreed != null && dogBreed instanceof DogBreed){
+            if(dogBreed != null && dogBreed instanceof DogBreed && getContext() != null){
                 dogName.setText(dogBreed.dogBreed);
                 dogPurpose.setText(dogBreed.bredFor);
                 dogTemperament.setText(dogBreed.temperament);
                 dogLifespan.setText(dogBreed.lifeSpan);
+
+                if(dogBreed.imageUrl != null){
+                    Util.loadImage(dogImage, dogBreed.imageUrl, new CircularProgressDrawable(getContext()));
+                }
             }
         });
     }
