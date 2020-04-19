@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
@@ -21,6 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.telekom.dogsapp.R;
+import de.telekom.dogsapp.databinding.FragmentDetailBinding;
 import de.telekom.dogsapp.model.DogBreed;
 import de.telekom.dogsapp.util.Util;
 import de.telekom.dogsapp.viewmodel.DetailViewModel;
@@ -30,7 +32,10 @@ public class DetailFragment extends Fragment {
 
     private int dogUuid;
     private DetailViewModel viewModel;
+    private FragmentDetailBinding binding;
 
+
+    /* ---> NOT needed anymore because of DataBinding in xml!    ===============================>>>
     @BindView(R.id.dogImage)
     ImageView dogImage;
 
@@ -46,6 +51,8 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.dogLifespan)
     TextView dogLifespan;
 
+     =============================================================================================*/
+
 
 
     public DetailFragment() {
@@ -55,9 +62,15 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_detail, container, false);
-        ButterKnife.bind(this, view);
-        return view;
+        FragmentDetailBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail, container, false);
+        this.binding = binding;
+
+        //Example: --> binding.dogName.setText("Some text"); // like this we have access to our code here...
+
+        // ---> Delete because of DataBinding ====================================================>>
+        //View view = inflater.inflate(R.layout.fragment_detail, container, false);
+        //ButterKnife.bind(this, view);
+        return binding.getRoot();
     }
 
     @Override
@@ -77,6 +90,10 @@ public class DetailFragment extends Fragment {
     private void observeViewModel () {
         viewModel.dogLiveData.observe(this, dogBreed -> {
             if(dogBreed != null && dogBreed instanceof DogBreed && getContext() != null){
+
+                binding.setDog(dogBreed);
+
+                /* ---> Delete because of DataBinding ============================================>>
                 dogName.setText(dogBreed.dogBreed);
                 dogPurpose.setText(dogBreed.bredFor);
                 dogTemperament.setText(dogBreed.temperament);
@@ -84,7 +101,7 @@ public class DetailFragment extends Fragment {
 
                 if(dogBreed.imageUrl != null){
                     Util.loadImage(dogImage, dogBreed.imageUrl, new CircularProgressDrawable(getContext()));
-                }
+                } */
             }
         });
     }
