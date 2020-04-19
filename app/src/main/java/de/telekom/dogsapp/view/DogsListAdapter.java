@@ -16,6 +16,7 @@ import javax.xml.namespace.QName;
 
 import de.telekom.dogsapp.R;
 import de.telekom.dogsapp.model.DogBreed;
+import de.telekom.dogsapp.util.Util;
 
 public class DogsListAdapter extends RecyclerView.Adapter <DogsListAdapter.DogViewHolder> {
 
@@ -50,6 +51,9 @@ public class DogsListAdapter extends RecyclerView.Adapter <DogsListAdapter.DogVi
         // now: populate name AND lifespan
         name.setText(dogsList.get(position).dogBreed);
         lifespan.setText(dogsList.get(position).lifeSpan);
+
+        // this will load our images...
+        Util.loadImage(image, dogsList.get(position).imageUrl, Util.getProgressDrawable(image.getContext()));
     }
 
     @Override
