@@ -1,6 +1,7 @@
 package de.telekom.dogsapp.viewmodel;
 
 import android.app.Application;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -76,6 +77,7 @@ public class ListViewModel extends AndroidViewModel {
     //public void refresh() { fetchFromRemote(); }
     //public void refresh() { fetchFromDatabase(); }
     public void refresh(){
+        checkCacheDuration();
         long updateTime = prefHelper.getUpdateTime(); // last time we updated the information
         long currentTime = System.nanoTime();
         if (updateTime != 0 && currentTime - updateTime < refreshTime){
@@ -88,6 +90,21 @@ public class ListViewModel extends AndroidViewModel {
 
     public void refreshBypassCache(){
         fetchFromRemote();
+    }
+
+
+    // for the settings: Chapter 60!
+    private void checkCacheDuration(){
+        String cachePreference = prefHelper.getCacheDuration();
+
+        if (!cachePreference.equals("")){
+            try {
+                int cachePreferenceInt = Integer.parseInt(cachePreference);
+                refreshTime = cachePreferenceInt * 1000 * 1000 * 1000L;
+            } catch (NumberFormatException e){
+                e.printStackTrace();
+            }
+        }
     }
 
 

@@ -35,5 +35,9 @@ public class SharedPreferencesHelper {
     }
 
     // --> continuing in ListViewModel with SharedPreferencesHelper
+    public String getCacheDuration(){
+        return prefs.getString("pref_cache_duration", "");
+    }
 
 }
+
