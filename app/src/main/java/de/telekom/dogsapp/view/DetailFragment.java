@@ -1,5 +1,7 @@
 package de.telekom.dogsapp.view;
 
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
 import androidx.navigation.Navigation;
+import androidx.palette.graphics.Palette;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import android.view.LayoutInflater;
@@ -17,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
@@ -24,6 +30,7 @@ import butterknife.ButterKnife;
 import de.telekom.dogsapp.R;
 import de.telekom.dogsapp.databinding.FragmentDetailBinding;
 import de.telekom.dogsapp.model.DogBreed;
+import de.telekom.dogsapp.model.DogPalette;
 import de.telekom.dogsapp.util.Util;
 import de.telekom.dogsapp.viewmodel.DetailViewModel;
 
@@ -92,6 +99,9 @@ public class DetailFragment extends Fragment {
             if(dogBreed != null && dogBreed instanceof DogBreed && getContext() != null){
 
                 binding.setDog(dogBreed);
+                if (dogBreed.imageUrl != null){
+                    setupBackgroundColor(dogBreed.imageUrl);
+                }
 
                 /* ---> Delete because of DataBinding ============================================>>
                 dogName.setText(dogBreed.dogBreed);
@@ -106,6 +116,30 @@ public class DetailFragment extends Fragment {
         });
     }
 
+
+    private void setupBackgroundColor(String url){
+        Glide.with(this)
+                .asBitmap()
+                .load(url)
+                .into(new CustomTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                Palette.from(resource)
+                        .generate(palette -> {
+                            int intColor = palette.getLightMutedSwatch().getRgb();
+                            DogPalette myPalette = new DogPalette(intColor);
+                            binding.setPalette(myPalette);
+                        });
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+
+            }
+        });
+
+
+    }
 
 }
 

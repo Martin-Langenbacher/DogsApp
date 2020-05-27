@@ -15,6 +15,7 @@ import de.telekom.dogsapp.model.DogBreed;
 import de.telekom.dogsapp.model.DogDao;
 import de.telekom.dogsapp.model.DogDatabase;
 import de.telekom.dogsapp.model.DogsApiService;
+import de.telekom.dogsapp.util.NotificationsHelper;
 import de.telekom.dogsapp.util.SharedPreferencesHelper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -118,6 +119,8 @@ public class ListViewModel extends AndroidViewModel {
                                 insertTask = new InsertDogsTask();
                                 insertTask.execute(dogBreeds);
                                 Toast.makeText(getApplication(), "Dogs retrieved from endpoint", Toast.LENGTH_SHORT).show();
+                                // now with the notification (NotificationsHelper)
+                                NotificationsHelper.getInstance(getApplication()).createNotification(); // that is so simple, because we put all functionality in another class!
                             }
 
                             @Override
